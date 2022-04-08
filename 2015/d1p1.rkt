@@ -6,7 +6,7 @@
 (for ([line (file->lines file-name)]) 
     (set! *DATA* (string->list line)))
 
-(define list-of-instructions *DATA*)
+(define the-list-of-instructions *DATA*)
 
 (define current-position   0)
 (define go-up            #\()
@@ -18,21 +18,27 @@
 (define (decrease-current-position)
     (set! current-position (- current-position 1)))
 
-(define get-next-instruction-from       car)
-(define get-remaining-instructions-from cdr)
+(define get-the-next-instruction-from       car)
+(define get-the-remaining-instructions-from cdr)
 
-(define (next-instruction-is-go-up? instructions)
-    (equal? (get-next-instruction-from instructions) go-up))
+(define (is-the-next-instruction-to-go-up? instructions)
+    (equal? (get-the-next-instruction-from instructions) go-up))
 
-(define (find-position-from list-of-instructions)
-    (if (empty? list-of-instructions)
-        current-position
-        (if (next-instruction-is-go-up? list-of-instructions)
+(define (then-return-the x) x)
+
+
+; Attempt to make the code as English-like as possible
+(define (find-position-from the-list-of-instructions)
+    (if (empty? the-list-of-instructions)
+        (then-return-the current-position)
+        (if (is-the-next-instruction-to-go-up? the-list-of-instructions)
             (begin
                 (increase-current-position)
-                (find-position-from (get-remaining-instructions-from list-of-instructions)))
+                (find-position-from 
+                    (get-the-remaining-instructions-from the-list-of-instructions)))
             (begin
                 (decrease-current-position)
-                (find-position-from (get-remaining-instructions-from list-of-instructions))))))
+                (find-position-from 
+                    (get-the-remaining-instructions-from the-list-of-instructions))))))
 
-(find-position-from list-of-instructions)
+(find-position-from the-list-of-instructions)
